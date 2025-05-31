@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>X to XCancel Converter</title>
+  <style>
+    :root {
+      --primary-bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --accent: #6c63ff;
+      --accent-light: #ebe9ff;
+      --text: #333;
+      --success: #2e7d32;
+      --error: #c62828;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 0.75rem;
+      width: 100%;
+      font-size: 1rem;
+      border: 2px solid var(--accent-light);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: var(--accent-light);
+    }
+    .output a {
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .status-success {
+      color: var(--success);
+    }
+    .status-error {
+      color: var(--error);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>✨ X → XCancel Link Converter ✨</h1>
+    <p>Paste your <code>x.com</code> link below. It converts automatically.</p>
+    <input type="text" id="inputLink" placeholder="https://x.com/elon/status/123..." />
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById('inputLink');
+    const output = document.getElementById('output');
+
+    input.addEventListener('input', () => {
+      const value = input.value.trim();
+      try {
+        const url = new URL(value);
+        if (url.hostname === 'x.com' || url.hostname.endsWith('.x.com')) {
+          url.hostname = url.hostname.replace(/(^|\.)x\.com$/, '$1xcancel.com');
+          output.innerHTML = `<div class="status-success">✅ Converted:</div><a href="${url.href}" target="_blank">${url.href}</a>`;
+        } else {
+          output.innerHTML = `<div class="status-error">❌ Not an x.com URL.</div>`;
+        }
+      } catch (e) {
+        output.innerHTML = `<div class="status-error">❌ Invalid URL format.</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
